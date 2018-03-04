@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MouseHeatmap")]
+[assembly: AssemblyTitle("MouseHeatmap.Collector")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MouseHeatmap")]
+[assembly: AssemblyProduct("MouseHeatmap.Collector")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("220a5fe2-162c-4245-a2b2-c846607fe2e6")]
+[assembly: Guid("c9ff88a2-2f2c-4eb4-a3f5-d3c12e88d0bc")]
 
 // Version information for an assembly consists of the following four values:
 //
