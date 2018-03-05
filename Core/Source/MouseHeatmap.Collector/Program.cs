@@ -13,22 +13,25 @@ namespace MouseHeatmap.Collector
 
             Log.Information("Starting mouse heatmap collector");
             
-            var configuration = new Configuration();
-            //  configuration.RecreateDatabaseIfNecessary();
+            var configuration = new DatabaseConfiguration();
+          var dbContext= configuration.InitializeDbContext();
 
 
-            using (var db = new MouseHeatmapDbContext())
-            {
-                db.Database.Migrate();
+     
 
                 var screenUnit = new ScreenUnit
                 {
                     ScreenUnitId = 1
                 };
-                db.ScreenUnits.Add(screenUnit);
-                db.SaveChanges();
-            }
-                Console.ReadKey();
+            dbContext.ScreenUnits.Add(screenUnit);
+
+
+            dbContext.SaveChanges();
+            dbContext.Dispose();
+
+            Log.Information("Quiting mouse heatmap collector");
+
+            Console.ReadKey();
         }
 
         private static void ConfigureLogger()

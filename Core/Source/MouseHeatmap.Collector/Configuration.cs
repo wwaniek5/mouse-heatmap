@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.IO;
 
 namespace MouseHeatmap.Collector
 {
-    internal class Configuration
+    internal class DatabaseConfiguration
     {
-        public Configuration()
+        public DatabaseConfiguration()
         {
         }
 
-        internal void RecreateDatabaseIfNecessary()
+        internal MouseHeatmapDbContext InitializeDbContext()
         {
             var sourceFolder = FindSourceFolder();
 
             var databasePath = Path.Combine(sourceFolder.FullName, "MouseHeatmapDb.sqlite");
 
-            if (!File.Exists(databasePath))
-            {
-             //   SQLiteConnection.CreateFile(databasePath);
-            }
+            var dbContext =new MouseHeatmapDbContext(new SQLiteConnectionString(databasePath));
+            dbContext.Database.Migrate();
+            return dbContext;
+
         }
 
         private DirectoryInfo FindSourceFolder()
