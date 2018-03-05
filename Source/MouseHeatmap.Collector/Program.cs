@@ -1,9 +1,9 @@
-﻿using Serilog;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using PeterKottas.DotNetCore.WindowsService;
+using PeterKottas.DotNetCore.WindowsService.Interfaces;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MouseHeatmap.Collector
 {
@@ -12,14 +12,37 @@ namespace MouseHeatmap.Collector
         static void Main(string[] args)
         {
             ConfigureLogger();
-
-            Log.Information("Starting mouse heatmap collector");
-
-            var configuration = new Configuration();
-            configuration.RecreateDatabaseIfNecessary();
-
             
+            ServiceRunner<Service>.Run(config =>
+            {
+                var serviceName = "MouseHeatmapColector";
+                config.SetName(serviceName);
+                config.Service(serviceConfig =>
+                {
+                    serviceConfig.ServiceFactory((extraArguments, controller) =>
+                    {
+                        return new Service();
+                    });
 
+                    serviceConfig.OnStart((service, extraParams) =>
+                    {
+                        Log.Information("Starting {@serviceName}", serviceName);
+                        service.Start();
+                    });
+
+                    serviceConfig.OnStop(service =>
+                    {
+                        Log.Information("Stopping {@serviceName}", serviceName);
+                        service.Stop();
+                    });
+
+                    serviceConfig.OnError(e =>
+                    {
+                        Log.Error(e, "Service errored with exception: ");
+                    });
+                });
+            });
+                       
             Console.ReadKey();
         }
 
