@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using PeterKottas.DotNetCore.WindowsService;
+using PeterKottas.DotNetCore.WindowsService.Interfaces;
 using Serilog;
 using System;
 
@@ -10,27 +12,37 @@ namespace MouseHeatmap.Collector
         static void Main(string[] args)
         {
             ConfigureLogger();
-
-            Log.Information("Starting mouse heatmap collector");
             
-            var configuration = new DatabaseConfiguration();
-          var dbContext= configuration.InitializeDbContext();
-
-
-     
-
-                var screenUnit = new ScreenUnit
+            ServiceRunner<Service>.Run(config =>
+            {
+                var serviceName = "MouseHeatmapColector";
+                config.SetName(serviceName);
+                config.Service(serviceConfig =>
                 {
-                    ScreenUnitId = 1
-                };
-            dbContext.ScreenUnits.Add(screenUnit);
+                    serviceConfig.ServiceFactory((extraArguments, controller) =>
+                    {
+                        return new Service();
+                    });
 
+                    serviceConfig.OnStart((service, extraParams) =>
+                    {
+                        Log.Information("Starting {@serviceName}", serviceName);
+                        service.Start();
+                    });
 
-            dbContext.SaveChanges();
-            dbContext.Dispose();
+                    serviceConfig.OnStop(service =>
+                    {
+                        Log.Information("Stopping {@serviceName}", serviceName);
+                        service.Stop();
+                    });
 
-            Log.Information("Quiting mouse heatmap collector");
-
+                    serviceConfig.OnError(e =>
+                    {
+                        Log.Error(e, "Service errored with exception: ");
+                    });
+                });
+            });
+                       
             Console.ReadKey();
         }
 
