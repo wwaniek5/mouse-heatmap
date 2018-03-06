@@ -18,7 +18,7 @@ namespace MouseHeatmap.Collector
 
             var screenUnit = new ScreenUnit
             {
-                ScreenUnitId = 1
+             
             };
             _dbContext.ScreenUnits.Add(screenUnit);
         }
