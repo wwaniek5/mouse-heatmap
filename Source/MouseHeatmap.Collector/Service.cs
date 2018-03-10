@@ -1,15 +1,13 @@
-﻿using PeterKottas.DotNetCore.WindowsService.Interfaces;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using PeterKottas.DotNetCore.WindowsService.Interfaces;
+
 
 namespace MouseHeatmap.Collector
 {
     public class Service : IMicroService
     {
         private MouseHeatmapDbContext _dbContext;
-
+     
         public void Start()
         {
 
