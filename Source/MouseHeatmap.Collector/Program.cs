@@ -11,23 +11,18 @@ namespace MouseHeatmap.Collector
         static void Main(string[] args)
         {
             
-            HostFactory.Run(x =>
+            HostFactory.Run(hostConfigurator =>
             {
                 ConfigureLogger();
 
-                x.UseSerilog();
+                hostConfigurator.UseSerilog();
+                hostConfigurator.UseAssemblyInfoForServiceInfo();
 
-                x.UseAssemblyInfoForServiceInfo();
+                hostConfigurator.Service(settings => new Service());
 
-                x.Service(settings => new Service(), s =>
+                hostConfigurator.OnException((exception) =>
                 {
-                    s.BeforeStartingService(_ => Console.WriteLine("BeforeStart"));
-                    s.BeforeStoppingService(_ => Console.WriteLine("BeforeStop"));
-                });
-
-                x.OnException((exception) =>
-                {
-                    Console.WriteLine("Exception thrown - " + exception.Message);
+                    Log.Error(exception,"Service errored with exception: ");
                 });
             });
         }
