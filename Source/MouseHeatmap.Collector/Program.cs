@@ -1,17 +1,23 @@
 ﻿using Gma.System.MouseKeyHook;
+using MouseHeatmap.SQLite;
 using Serilog;
 using System;
 using System.Windows.Forms;
-using Topshelf;
+
 
 namespace MouseHeatmap.Collector
 {
     class Program
     {
+        private static object _dbContext;
 
         static void Main(string[] args)
         {
             ConfigureLogger();
+
+            var configuration = new DatabaseConfiguration();
+            _dbContext = configuration.InitializeDbContext();
+
 
             collectdata();
 
