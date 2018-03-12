@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using Serilog;
 using System;
+using System.Windows.Forms;
 using Topshelf;
 
 namespace MouseHeatmap.Collector
@@ -10,21 +11,30 @@ namespace MouseHeatmap.Collector
 
         static void Main(string[] args)
         {
-            
-            HostFactory.Run(hostConfigurator =>
+            ConfigureLogger();
+
+            collectdata();
+
+            Application.ApplicationExit += new EventHandler(OnExit);
+            Application.Run();
+
+
+        }
+
+        private static void OnExit(object sender, EventArgs e)
+        {
+            //todo
+        }
+
+        public static void collectdata()
+        {
+
+
+
+            Hook.GlobalEvents().MouseMove += (sender, e) =>
             {
-                ConfigureLogger();
-
-                hostConfigurator.UseSerilog();
-                hostConfigurator.UseAssemblyInfoForServiceInfo();
-
-                hostConfigurator.Service(settings => new Service());
-
-                hostConfigurator.OnException((exception) =>
-                {
-                    Log.Error(exception,"Service errored with exception: ");
-                });
-            });
+                Log.Information(e.X + " , " + e.Y);
+            };
         }
 
         private static void ConfigureLogger()
