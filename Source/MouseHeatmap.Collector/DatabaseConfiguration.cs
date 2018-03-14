@@ -1,28 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Data.Common;
 using System.IO;
-using System.Text;
 
-namespace MouseHeatmap.SQLite
+namespace MouseHeatmap.Collector
 {
     public class DatabaseConfiguration
     {
 
-
         public MouseHeatmapDbContext InitializeDbContext()
         {
-
             var sourceFolder = FindSourceFolder();
 
             var databasePath = Path.Combine(sourceFolder.FullName, "MouseHeatmapDb.sqlite");
 
-            var dbContext = new MouseHeatmapDbContext(new SQLiteConnectionString(databasePath));
-            dbContext.Database.Migrate();
+            var conn = DbProviderFactories.GetFactory("System.Data.SQLite").CreateConnection();
+            conn.ConnectionString = new SQLiteConnectionString(databasePath).ToString();
+
+            var dbContext = new MouseHeatmapDbContext(conn);
 
             return dbContext;
-
 
         }
 
