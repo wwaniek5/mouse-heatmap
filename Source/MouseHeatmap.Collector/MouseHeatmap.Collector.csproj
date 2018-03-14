@@ -84,14 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseConfiguration.cs" />
-    <Compile Include="FootballDbContext.cs" />
-    <Compile Include="ModelConfiguration.cs" />
+    <Compile Include="FileDatabaseConnectionFactory.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenUnit.cs" />
     <Compile Include="SQLiteConnectionString.cs" />
-    <Compile Include="Stadion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

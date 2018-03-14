@@ -15,20 +15,6 @@ namespace MouseHeatmap.Collector
             ConfigureLogger();
 
 
-//            using (var context = new FootballDbContext("footballDb"))
-//            {
-//                context.Stadions.Add(
-//     new Stadion
-//     {
-//         Name = "Stade de Suisse",
-//         City = "Bern",
-//         Street = "Papiermühlestrasse 71"
-//     }
-//);
-
-//                context.SaveChanges();
-//            }
-
             var configuration = new DatabaseConfiguration();
             _dbContext = configuration.InitializeDbContext();
 
