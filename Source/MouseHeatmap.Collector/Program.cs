@@ -1,6 +1,7 @@
-﻿using Gma.System.MouseKeyHook;
+﻿
 using Serilog;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 
@@ -8,29 +9,39 @@ namespace MouseHeatmap.Collector
 {
     class Program
     {
+       private  static Mutex mutex = new Mutex(false, "MouseHeatmap.Collector");
+
         private static MouseHeatmapDbContext _dbContext;
+        private static MouseMovementsCollector _collector;
 
         static void Main(string[] args)
         {
+            EnsureAnotherInstanceIsNotRunning();         
+     
+
             ConfigureLogger();
 
 
             var configuration = new DatabaseConfiguration();
             _dbContext = configuration.InitializeDbContext();
 
-
-            var screenUnit = new ScreenUnit
-            {
-
-            };
-            _dbContext.ScreenUnits.Add(screenUnit);
-            _dbContext.SaveChanges();
-            collectdata();
+            _collector = new MouseMovementsCollector(_dbContext);
+            _collector.Start();
+ 
 
             Application.ApplicationExit += new EventHandler(OnExit);
             Application.Run();
 
 
+        }
+        private static void EnsureAnotherInstanceIsNotRunning()
+        {           
+
+            if(!mutex.WaitOne(TimeSpan.FromSeconds(5), false))
+            {
+                throw new Exception("Another instance of MouseHeatmap.Collector is already runnig");
+            }
+   
         }
 
         private static void OnExit(object sender, EventArgs e)
@@ -39,16 +50,6 @@ namespace MouseHeatmap.Collector
             _dbContext.Dispose();
         }
 
-        public static void collectdata()
-        {
-
-
-
-            Hook.GlobalEvents().MouseMove += (sender, e) =>
-            {
-                Log.Information(e.X + " , " + e.Y);
-            };
-        }
 
         private static void ConfigureLogger()
         {

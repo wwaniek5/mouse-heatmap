@@ -86,9 +86,11 @@
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="FileDatabaseConnectionFactory.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
+    <Compile Include="MouseMovementsCollector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenUnit.cs" />
+    <Compile Include="ScreenUnitsInitializer.cs" />
     <Compile Include="SQLiteConnectionString.cs" />
   </ItemGroup>
   <ItemGroup>
