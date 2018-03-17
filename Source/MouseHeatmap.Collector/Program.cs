@@ -1,5 +1,6 @@
 ﻿
 using Serilog;
+using Serilog.Events;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,7 +26,7 @@ namespace MouseHeatmap.Collector
             var configuration = new DatabaseConfiguration();
             _dbContext = configuration.InitializeDbContext();
 
-            _collector = new MouseMovementsCollector(_dbContext);
+            _collector = new MouseMovementsCollector(_dbContext,10);
             _collector.Start();
  
 
@@ -54,8 +55,11 @@ namespace MouseHeatmap.Collector
         private static void ConfigureLogger()
         {
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
                 .WriteTo.ColoredConsole()
-                .WriteTo.RollingFile("C:/Logs/MouseHeatmapLogs/MouseHeatmapCollector.log")
+                .WriteTo.RollingFile(
+                "C:/Logs/MouseHeatmapLogs/MouseHeatmapCollector.log", 
+                restrictedToMinimumLevel: LogEventLevel.Information)         
                 .CreateLogger();
         }
     }

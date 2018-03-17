@@ -83,8 +83,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoursorPath.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="FileDatabaseConnectionFactory.cs" />
+    <Compile Include="LinearSystem.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
     <Compile Include="MouseMovementsCollector.cs" />
     <Compile Include="Program.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="ScreenUnit.cs" />
     <Compile Include="ScreenUnitsInitializer.cs" />
     <Compile Include="SQLiteConnectionString.cs" />
+    <Compile Include="SystemSolution.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
