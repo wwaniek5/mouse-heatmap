@@ -22,16 +22,25 @@ namespace MouseHeatmap.Collector
 
             ConfigureLogger();
 
+            try
+            {
+                Log.Information("starting");
 
-            var configuration = new DatabaseConfiguration();
-            _dbContext = configuration.InitializeDbContext();
+                var configuration = new DatabaseConfiguration();
+                _dbContext = configuration.InitializeDbContext();
 
-            _collector = new MouseMovementsCollector(_dbContext,10);
-            _collector.Start();
- 
+                _collector = new MouseMovementsCollector(_dbContext, new TimeProvider());
+                _collector.Start();
 
-            Application.ApplicationExit += new EventHandler(OnExit);
-            Application.Run();
+
+                Application.ApplicationExit += new EventHandler(OnExit);
+                Application.Run();
+            }
+            catch(Exception e)
+            {
+                Log.Error(e,"MouseHeatmap.Collector errored:");
+            }
+
 
 
         }

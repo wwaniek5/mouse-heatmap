@@ -12,7 +12,9 @@ namespace MouseHeatmap.Collector
             var sourceFolder = FindSourceFolder();
 
             var databasePath = Path.Combine(sourceFolder.FullName, "MouseHeatmapDb.sqlite");
-            
+
+            Console.WriteLine(databasePath);
+
             var dbContext = new MouseHeatmapDbContext(
                 new FileDatabaseConnectionFactory()
                 .CreateForDatabase(databasePath));

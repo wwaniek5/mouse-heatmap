@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace MouseHeatmap.Collector
 {
-    internal class CoursorPath : IEnumerable<Point>
+    public class CoursorPath : IEnumerable<Point>
     {
         private HashSet<Point> _screenBlocks = new HashSet<Point>();
 
@@ -15,9 +15,13 @@ namespace MouseHeatmap.Collector
             this._screenBlocks = points;
         }
 
-        internal static CoursorPath FromEndPoints(Point p1, Point p2)
+        public static CoursorPath FromEndBlocks(Point p1, Point p2)
         {
-            var distance = CalculateDistance(p1, p2);
+            var distance = PointUtils.CalculateDistance(p1, p2)+4;//+ anything
+            if (distance == 0)
+            {
+                return new CoursorPath(new HashSet<Point> { p1 });
+            }
 
             var increment = 1 / distance;
 
@@ -32,28 +36,13 @@ namespace MouseHeatmap.Collector
                 screenBlocks.Add(screenBlock);
             }
 
+            screenBlocks.Add(p1);
+            screenBlocks.Add(p1);
+
             return new CoursorPath(screenBlocks);
-
-            //if (p1 == new Point(0, 0) && p2 == new Point(0, 0))
-            //{
-            //    return new CoursorPath(new HashSet<Point> { p1 });
-            //}
-
-            //var system = new LinearSystem(p1.X, p1.Y, 1, p2.X, p2.Y, 1);
-            //var solution = system.Solve();
-
-            //if (solution.IsIndeterminate)
-            //{
-            //    return new CoursorPath(new HashSet<Point> { p1 });
-            //}
-
-            //var A = solution.X;
-            //var B = solution.Y;
-
-
         }
 
-        private static double CalculateDistance(Point p1, Point p2) => Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
+       
 
         public IEnumerator<Point> GetEnumerator()
         {

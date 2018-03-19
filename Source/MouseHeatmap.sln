@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Collector", "MouseHeatmap.Collector\MouseHeatmap.Collector.csproj", "{E35611B5-D095-4A5C-962E-CF0D7C4835A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Collector.Tests", "MouseHeatmap.Collector.Tests\MouseHeatmap.Collector.Tests.csproj", "{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E35611B5-D095-4A5C-962E-CF0D7C4835A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E35611B5-D095-4A5C-962E-CF0D7C4835A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E35611B5-D095-4A5C-962E-CF0D7C4835A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
