@@ -11,8 +11,7 @@ namespace MouseHeatmap.Collector
     class Program
     {
        private  static Mutex mutex = new Mutex(false, "MouseHeatmap.Collector");
-
-        private static MouseHeatmapDbContext _dbContext;
+        
         private static MouseMovementsCollector _collector;
 
         static void Main(string[] args)
@@ -26,10 +25,7 @@ namespace MouseHeatmap.Collector
             {
                 Log.Information("starting");
 
-                var configuration = new DatabaseConfiguration();
-                _dbContext = configuration.InitializeDbContext();
-
-                _collector = new MouseMovementsCollector(_dbContext, new TimeProvider());
+                _collector = new MouseMovementsCollector( new TimeProvider(),new Recorder(new MouseHeatmapDbContextFactory()));
                 _collector.Start();
 
 
@@ -38,7 +34,8 @@ namespace MouseHeatmap.Collector
             }
             catch(Exception e)
             {
-                Log.Error(e,"MouseHeatmap.Collector errored:");
+                Log.Error(e,"MouseHeatmap.Collector errored: ");
+                throw e;
             }
 
 
@@ -49,15 +46,14 @@ namespace MouseHeatmap.Collector
 
             if(!mutex.WaitOne(TimeSpan.FromSeconds(5), false))
             {
-                throw new Exception("Another instance of MouseHeatmap.Collector is already runnig");
+                throw new Exception("Another instance of MouseHeatmap.Collector is already running");
             }
    
         }
 
         private static void OnExit(object sender, EventArgs e)
         {
-            _dbContext.SaveChanges();
-            _dbContext.Dispose();
+            
         }
 
 

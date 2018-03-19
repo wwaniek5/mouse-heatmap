@@ -107,10 +107,12 @@
     <Compile Include="LinearSystem.cs" />
     <Compile Include="MouseEventExtensions.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
+    <Compile Include="MouseHeatmapDbContextFactory.cs" />
     <Compile Include="MouseMovementsCollector.cs" />
     <Compile Include="PointUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recorder.cs" />
     <Compile Include="ScreenUnit.cs" />
     <Compile Include="ScreenUnitsInitializer.cs" />
     <Compile Include="SQLiteConnectionString.cs" />
