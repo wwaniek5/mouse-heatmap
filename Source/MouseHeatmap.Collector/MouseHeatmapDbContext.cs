@@ -6,18 +6,10 @@ namespace MouseHeatmap.Collector
 {
     public class MouseHeatmapDbContext : DbContext
     {
-        private SQLiteConnectionString _connectionString;
 
         public MouseHeatmapDbContext(DbConnection connection) : base(connection,true)
         {
         }
-
-        //public MouseHeatmapDbContext(SQLiteConnectionString connectionString):base(connectionString.ToString())
-        //{
-        //    _connectionString = connectionString;
-
-        //  //  base(connectionString.ToString());
-        //}
 
         public DbSet<ScreenUnit> ScreenUnits { get; set; }
 
@@ -28,6 +20,5 @@ namespace MouseHeatmap.Collector
             var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<MouseHeatmapDbContext>(modelBuilder);
             Database.SetInitializer(sqliteConnectionInitializer);
         }
-
     }
 }

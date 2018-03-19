@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MouseHeatmap.Collector
 {
     public class SQLiteConnectionString
@@ -12,6 +7,7 @@ namespace MouseHeatmap.Collector
 
         public SQLiteConnectionString(string path)
         {
+            //todo validation
             connectionString = $@"Data Source={path};";
         }
 

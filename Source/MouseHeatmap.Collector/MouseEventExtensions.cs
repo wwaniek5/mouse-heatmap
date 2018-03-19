@@ -10,9 +10,11 @@ namespace MouseHeatmap.Collector
 {
     public static class MouseEventExtensions
     {
+        public static int NumberOfPixelsInScreenBlock = 10;
+
         public static Point ToScreenBlock(this MouseEventArgs mouseEvent)
         {
-            return PointUtils.GetScreenBlockFromPixel(mouseEvent.Location);
+            return new Point(mouseEvent.X / NumberOfPixelsInScreenBlock, mouseEvent.Y / NumberOfPixelsInScreenBlock);
          }
     }
 }

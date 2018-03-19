@@ -104,7 +104,6 @@
     <Compile Include="CoursorPath.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="FileDatabaseConnectionFactory.cs" />
-    <Compile Include="LinearSystem.cs" />
     <Compile Include="MouseEventExtensions.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
     <Compile Include="MouseHeatmapDbContextFactory.cs" />
@@ -114,9 +113,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="ScreenUnit.cs" />
-    <Compile Include="ScreenUnitsInitializer.cs" />
     <Compile Include="SQLiteConnectionString.cs" />
-    <Compile Include="SystemSolution.cs" />
     <Compile Include="TimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -35,10 +35,10 @@ namespace MouseHeatmap.Collector
             catch(Exception e)
             {
                 Log.Error(e,"MouseHeatmap.Collector errored: ");
+                Log.CloseAndFlush();
+
                 throw e;
             }
-
-
 
         }
         private static void EnsureAnotherInstanceIsNotRunning()
