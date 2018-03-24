@@ -64,6 +64,7 @@ namespace MouseHeatmap.Collector
             var screenUnit = GetScreenUnit(dbContext, mouseEvent.ToScreenBlock());
             screenUnit.MouseFinishedCount++;
 
+
         }
 
         private ScreenUnit GetScreenUnit(MouseHeatmapDbContext dbContext, Point screenBlock)

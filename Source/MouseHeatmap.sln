@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Collector", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Collector.Tests", "MouseHeatmap.Collector.Tests\MouseHeatmap.Collector.Tests.csproj", "{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Generator", "MouseHeatmap.Generator\MouseHeatmap.Generator.csproj", "{E0BAF1BB-791B-4CA0-8BC2-020415D519E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseHeatmap.Generator.Tests", "MouseHeatmap.Generator.Tests\MouseHeatmap.Generator.Tests.csproj", "{3E63158D-3D4A-4B88-AA31-11786897BD7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEA7AD98-E6A5-41A4-809F-0E0DB7333020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0BAF1BB-791B-4CA0-8BC2-020415D519E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0BAF1BB-791B-4CA0-8BC2-020415D519E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0BAF1BB-791B-4CA0-8BC2-020415D519E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0BAF1BB-791B-4CA0-8BC2-020415D519E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E63158D-3D4A-4B88-AA31-11786897BD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E63158D-3D4A-4B88-AA31-11786897BD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E63158D-3D4A-4B88-AA31-11786897BD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E63158D-3D4A-4B88-AA31-11786897BD7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

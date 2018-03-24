@@ -5,7 +5,7 @@ namespace MouseHeatmap.Collector
 {
     public class MouseHeatmapDbContextFactory
     {
-        private string _databasePath;
+        public string _databasePath;
 
         public void FindDatabase()
         {
