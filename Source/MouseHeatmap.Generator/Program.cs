@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,29 +21,54 @@ namespace MouseHeatmap.Generator
 
             using (var dbContext = dbContextFactory.Create())
             {
-               var maxX= dbContext.ScreenUnits.Max(screenUnit => screenUnit.X);
-                var maxY = dbContext.ScreenUnits.Max(screenUnit => screenUnit.Y);
-
-                var bitmap = new Bitmap(maxX+2, maxY+2);
-
-
-                var cleanedScreenUnits = Clean(dbContext.ScreenUnits.ToList());
-
-
-                var maxMousePassedCount = cleanedScreenUnits.Max(screenUnit => screenUnit.MousePassedCount);
-                var minMousePassedCount = cleanedScreenUnits.Min(screenUnit => screenUnit.MousePassedCount);
-
-                foreach (var screenUnit in cleanedScreenUnits)
-                {
-                    bitmap.SetPixel(screenUnit.X+1, screenUnit.Y+1, TranslateValueToColor(screenUnit.MousePassedCount, minMousePassedCount, maxMousePassedCount));
-                };
-
-                bitmap.Save("MousePassed.bmp");
-
-                
-               
+                Generate(su => su.MousePassedCount, "MousePassedHeatmap.bmp", dbContext);
+                Generate(su => su.MouseFinishedCount, "MouseFinishedHeatmap.bmp", dbContext);
+                Generate(CalculateAvarageSpeed, "SpeedHeatmap.bmp", dbContext);
             }
-            
+        }
+
+        private static long CalculateAvarageSpeed(ScreenUnit screenUnit)
+        {
+            if (screenUnit.MouseFinishedCount == 0)
+                return 0;
+            return screenUnit.SpeedCount / screenUnit.MouseFinishedCount;
+        }
+
+        private static void Generate(Func<ScreenUnit, long> selector, string fileName,  MouseHeatmapDbContext dbContext)
+        {
+            var screenUnits = RemoveNegativeValues(dbContext.ScreenUnits);
+
+            var maxX = screenUnits.Max(screenUnit => screenUnit.X);
+            var maxY = screenUnits.Max(screenUnit => screenUnit.Y);
+
+            var bitmap = CreateBitmap(maxX, maxX);
+
+            var maxValue = screenUnits.Max(selector);
+            var minValue = screenUnits.Min(selector);
+
+            foreach (var screenUnit in screenUnits)
+            {
+                bitmap.SetPixel(
+                    screenUnit.X + 1,
+                    screenUnit.Y + 1,
+                    TranslateValueToColor(selector(screenUnit), minValue, maxValue));
+            };
+
+            SaveImage(fileName, bitmap);
+        }
+
+        private static void SaveImage(string fileName, Bitmap bitmap)
+        {
+            var executionDirectory = new DirectoryInfo(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath).Parent;
+            var resultDirectory = executionDirectory.CreateSubdirectory("results");
+            var path = Path.Combine(resultDirectory.FullName, fileName);
+            bitmap.Save(path);
+        }
+
+        private static Bitmap CreateBitmap(int maxX, int maxY)
+        {
+           var bitmap= new Bitmap(maxX + 2, maxY + 2);
+            return bitmap;
         }
 
         private static Color TranslateValueToColor(long count, long min, long max)
@@ -51,24 +77,12 @@ namespace MouseHeatmap.Generator
 
             return Color.FromArgb(
                 255,
-                (int)(255 * relativeValue),
-                (int)(255 * (1 - relativeValue)));
+                (int)(255 * (1 - relativeValue)),
+                (int)(255 * relativeValue));
 
         }
 
-        public static IEnumerable<ScreenUnit> Clean(List<ScreenUnit> screenUnits)
-        {
-           return screenUnits
-                    .Where(su => su.X >= 0 && su.Y >= 0)
-                    .GroupBy(su => new { su.X, su.Y })
-                    .Select(grouping => new ScreenUnit
-                    {
-                        X = grouping.Key.X,
-                        Y = grouping.Key.Y,
-                        MousePassedCount = grouping.Sum(su => su.MousePassedCount),
-                        MouseFinishedCount = grouping.Sum(su => su.MouseFinishedCount),
-                        SpeedCount = grouping.Sum(su => su.SpeedCount),
-                    });
-        }
+        public static IEnumerable<ScreenUnit> RemoveNegativeValues(IEnumerable<ScreenUnit> screenUnits) => screenUnits
+                     .Where(su => su.X >= 0 && su.Y >= 0);
     }
 }
