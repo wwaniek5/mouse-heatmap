@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace MouseHeatmap.Collector
 {
-
     public interface IKeyboardMouseEventsFactory {
         IKeyboardMouseEvents Create();
     }
@@ -13,9 +12,6 @@ namespace MouseHeatmap.Collector
         public IKeyboardMouseEvents Create()
         {
             return Hook.GlobalEvents();
-
-        }
-
-       
+        }       
     }
 }

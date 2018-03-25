@@ -102,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoursorPath.cs" />
-    <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="DataRecorder.cs" />
     <Compile Include="DirectoryFinder.cs" />
     <Compile Include="FileDatabaseConnectionFactory.cs" />
