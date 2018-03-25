@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MouseHeatmap.Collector
 {
-    internal class DataRecorder
+    public class DataRecorder
     {
         private MouseHeatmapDbContextFactory _dbContextFactory;
 
@@ -15,7 +16,7 @@ namespace MouseHeatmap.Collector
             this._dbContextFactory = mouseHeatmapDbContextFactory;
         }
 
-        private void Save(List<ScreenUnit> screenUnitsForSaving,Action callback)
+        private void Save(List<ScreenUnit> screenUnitsForSaving)
         {
             var groupedScreenUnits = GroupSameScreenUnits(screenUnitsForSaving);
 
@@ -32,9 +33,13 @@ namespace MouseHeatmap.Collector
 
                 dbContext.SaveChanges();
 
+                Log.Debug("Saved entries: " + groupedScreenUnits.Count());
+                foreach(var su in groupedScreenUnits)
+                {
+                    Log.Debug("Saved: " + su.X+" , "+su.Y);
+                }
             }
-
-            callback();
+            
         }
 
         internal void Setup()
@@ -56,9 +61,9 @@ namespace MouseHeatmap.Collector
                      });
         }
 
-        public async Task SaveAsync(List<ScreenUnit> screenUnitsForSaving, Action callback)
+        public async Task SaveAsync(List<ScreenUnit> screenUnitsForSaving)
         {
-           await Task.Run(() => Save(screenUnitsForSaving,callback));
+           await Task.Run(() => Save(screenUnitsForSaving));
         }
 
         private ScreenUnit GetScreenUnit(MouseHeatmapDbContext dbContext, Point screenBlock)

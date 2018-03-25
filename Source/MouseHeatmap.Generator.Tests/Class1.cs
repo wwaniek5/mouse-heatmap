@@ -45,7 +45,7 @@ namespace MouseHeatmap.Generator.Tests
             var cleanScreenUnits = Program.Clean(dirtyScreenUnits).ToList();
 
             cleanScreenUnits.Count.Should().Be(1);
-            cleanScreenUnits[0].Should().BeEquivalentTo(
+            cleanScreenUnits[0].ShouldBeEquivalentTo(
 
                        new ScreenUnit
                        {
@@ -96,7 +96,7 @@ namespace MouseHeatmap.Generator.Tests
             var cleanScreenUnits = Program.Clean(dirtyScreenUnits).ToList();
 
             cleanScreenUnits.Count.Should().Be(2);
-            cleanScreenUnits[0].Should().BeEquivalentTo(
+            cleanScreenUnits[0].ShouldBeEquivalentTo(
 
                        new ScreenUnit
                        {
@@ -111,7 +111,7 @@ namespace MouseHeatmap.Generator.Tests
 
             );
 
-            cleanScreenUnits[1].Should().BeEquivalentTo(
+            cleanScreenUnits[1].ShouldBeEquivalentTo(
 
            new ScreenUnit
            {

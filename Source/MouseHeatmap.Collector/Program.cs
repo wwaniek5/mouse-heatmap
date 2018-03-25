@@ -16,16 +16,20 @@ namespace MouseHeatmap.Collector
 
         static void Main(string[] args)
         {
-            EnsureAnotherInstanceIsNotRunning();         
-     
-
+            EnsureAnotherInstanceIsNotRunning();    
             ConfigureLogger();
 
             try
             {
                 Log.Information("starting");
 
-                _collector = new MouseMovementsCollector( new TimeProvider(), new DataRecorder(new MouseHeatmapDbContextFactory()));
+                _collector = new MouseMovementsCollector( 
+                    new TimeProvider(), 
+                    new DataRecorder(new MouseHeatmapDbContextFactory(
+                        databaseLocation: "Source",
+                        databaseName: "MouseHeatmapDb.sqlite")),
+                    new KeyboardMouseEventsFactory()                    
+                    );
                 _collector.Start();
 
 

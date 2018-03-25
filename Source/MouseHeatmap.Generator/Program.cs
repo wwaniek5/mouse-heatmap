@@ -13,7 +13,9 @@ namespace MouseHeatmap.Generator
     {
         static void Main(string[] args)
         {
-            var dbContextFactory = new MouseHeatmapDbContextFactory();
+            var dbContextFactory = new MouseHeatmapDbContextFactory(
+                        databaseLocation: "Source",
+                        databaseName: "MouseHeatmapDb.sqlite");
             dbContextFactory.FindDatabase();
 
             using (var dbContext = dbContextFactory.Create())

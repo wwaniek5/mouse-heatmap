@@ -104,10 +104,12 @@
     <Compile Include="CoursorPath.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="DataRecorder.cs" />
+    <Compile Include="DirectoryFinder.cs" />
     <Compile Include="FileDatabaseConnectionFactory.cs" />
     <Compile Include="MouseEventExtensions.cs" />
     <Compile Include="MouseHeatmapDbContext.cs" />
     <Compile Include="MouseHeatmapDbContextFactory.cs" />
+    <Compile Include="KeyboardMouseEventsFactory.cs" />
     <Compile Include="MouseMovementsCollector.cs" />
     <Compile Include="PointUtils.cs" />
     <Compile Include="Program.cs" />

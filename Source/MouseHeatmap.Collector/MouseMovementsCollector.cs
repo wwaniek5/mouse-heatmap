@@ -2,11 +2,12 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MouseHeatmap.Collector
 {
-    internal class MouseMovementsCollector
+    public class MouseMovementsCollector
     {
         private ITimeProvider _timeProvider;
 
@@ -14,24 +15,28 @@ namespace MouseHeatmap.Collector
         private long _timeOfLastEvent;
 
         private List<ScreenUnit> _screenUnitsForSaving = new List<ScreenUnit>();
-        private bool _isDatabaseFree = true;
+
+        public Task DatabaseUpdateTask=Task.CompletedTask;
 
         private DataRecorder _dataRecorder;
         private NewScreenUnitsCalculator _newScreenUnitsCalculator;
+        private IKeyboardMouseEventsFactory _keyboardMouseEventsFactory;
 
-        public MouseMovementsCollector(ITimeProvider timeProvider,DataRecorder dataRecorder)
+
+        public MouseMovementsCollector(ITimeProvider timeProvider,DataRecorder dataRecorder, IKeyboardMouseEventsFactory keyboardMouseEventsFactory)
         {
             _timeProvider = timeProvider;
             _dataRecorder = dataRecorder;
             _newScreenUnitsCalculator = new NewScreenUnitsCalculator();
+            _keyboardMouseEventsFactory = keyboardMouseEventsFactory;
         }
 
-        internal void Start()
+        public void Start()
         {
             _dataRecorder.Setup();
             InitializeFirstMouseEvent();
 
-            Hook.GlobalEvents().MouseMove += OnMouseMoved;
+            _keyboardMouseEventsFactory.Create().MouseMove += OnMouseMoved;
         }
 
         private void InitializeFirstMouseEvent()
@@ -57,14 +62,14 @@ namespace MouseHeatmap.Collector
 
         private void AttemptSavingToDatabase()
         {
-            if (_isDatabaseFree)
+            if (DatabaseUpdateTask.IsCompleted)
             {
-                _isDatabaseFree = false;
-                _dataRecorder.SaveAsync(_screenUnitsForSaving, OnEndOfSaving);
+                Log.Debug("Trying to save: " + _screenUnitsForSaving.Count);
+
+                DatabaseUpdateTask =_dataRecorder.SaveAsync(new List<ScreenUnit>(_screenUnitsForSaving));
                 _screenUnitsForSaving.Clear();
             }
         }
 
-        private void OnEndOfSaving() => _isDatabaseFree = true;
     }
 }
