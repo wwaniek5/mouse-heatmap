@@ -1,5 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using Serilog;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MouseHeatmap.Collector
@@ -7,19 +9,26 @@ namespace MouseHeatmap.Collector
     internal class MouseMovementsCollector
     {
         private ITimeProvider _timeProvider;
-        private Recorder _recorder;
+
         private MouseEventArgs _lastEvent;
         private long _timeOfLastEvent;
 
-        public MouseMovementsCollector(ITimeProvider timeProvider,Recorder recorder)
+        private List<ScreenUnit> _screenUnitsForSaving = new List<ScreenUnit>();
+        private bool _isDatabaseFree = true;
+
+        private DataRecorder _dataRecorder;
+        private NewScreenUnitsCalculator _newScreenUnitsCalculator;
+
+        public MouseMovementsCollector(ITimeProvider timeProvider,DataRecorder dataRecorder)
         {
             _timeProvider = timeProvider;
-            _recorder = recorder;
+            _dataRecorder = dataRecorder;
+            _newScreenUnitsCalculator = new NewScreenUnitsCalculator();
         }
 
         internal void Start()
         {
-            _recorder.Setup();
+            _dataRecorder.Setup();
             InitializeFirstMouseEvent();
 
             Hook.GlobalEvents().MouseMove += OnMouseMoved;
@@ -37,10 +46,25 @@ namespace MouseHeatmap.Collector
 
             var now = _timeProvider.Now();
 
-            _recorder.RecordAsync(_lastEvent,mouseEvent, _timeOfLastEvent, now);
+            _screenUnitsForSaving.AddRange(
+                _newScreenUnitsCalculator.CalculateForNewEvent(_lastEvent, mouseEvent, _timeOfLastEvent, now));
+
+            AttemptSavingToDatabase();
 
             _timeOfLastEvent = now;
-            _lastEvent = mouseEvent;                               
-         }
+            _lastEvent = mouseEvent;
+        }
+
+        private void AttemptSavingToDatabase()
+        {
+            if (_isDatabaseFree)
+            {
+                _isDatabaseFree = false;
+                _dataRecorder.SaveAsync(_screenUnitsForSaving, OnEndOfSaving);
+                _screenUnitsForSaving.Clear();
+            }
+        }
+
+        private void OnEndOfSaving() => _isDatabaseFree = true;
     }
 }

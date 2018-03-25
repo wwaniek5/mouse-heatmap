@@ -25,7 +25,7 @@ namespace MouseHeatmap.Collector
             {
                 Log.Information("starting");
 
-                _collector = new MouseMovementsCollector( new TimeProvider(),new Recorder(new MouseHeatmapDbContextFactory()));
+                _collector = new MouseMovementsCollector( new TimeProvider(), new DataRecorder(new MouseHeatmapDbContextFactory()));
                 _collector.Start();
 
 
