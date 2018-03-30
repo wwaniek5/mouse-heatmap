@@ -2,6 +2,7 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +23,7 @@ namespace MouseHeatmap.Collector
         private NewScreenUnitsCalculator _newScreenUnitsCalculator;
         private IKeyboardMouseEventsFactory _keyboardMouseEventsFactory;
 
+        private Rectangle _initialScreenBounds;
 
         public MouseMovementsCollector(ITimeProvider timeProvider,DataRecorder dataRecorder, IKeyboardMouseEventsFactory keyboardMouseEventsFactory)
         {
@@ -36,6 +38,8 @@ namespace MouseHeatmap.Collector
             _dataRecorder.Setup();
             InitializeFirstMouseEvent();
 
+            _initialScreenBounds= Screen.PrimaryScreen.Bounds;
+
             _keyboardMouseEventsFactory.Create().MouseMove += OnMouseMoved;
         }
 
@@ -47,6 +51,12 @@ namespace MouseHeatmap.Collector
 
         private void OnMouseMoved(object sender,MouseEventArgs mouseEvent)
         {
+            if (CheckIfScreenSizeChanged())
+            {
+                Log.Debug("Screen size is different than when the program started");
+                return;
+            }
+
             Log.Debug(mouseEvent.X + " , " + mouseEvent.Y);
 
             var now = _timeProvider.Now();
@@ -58,6 +68,11 @@ namespace MouseHeatmap.Collector
 
             _timeOfLastEvent = now;
             _lastEvent = mouseEvent;
+        }
+
+        private bool CheckIfScreenSizeChanged()
+        {
+            return _initialScreenBounds != Screen.PrimaryScreen.Bounds;
         }
 
         private void AttemptSavingToDatabase()
