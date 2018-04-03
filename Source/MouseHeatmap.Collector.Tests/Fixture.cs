@@ -1,5 +1,9 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,18 +22,29 @@ namespace MouseHeatmap.Collector.Tests
 
         [SetUp]
         public void SetUp()
-        {          
-             TryDeleteDatabase();
+        {
+            UnlockDatabase();
+            TryDeleteDatabase();
             _mockEvents = new MockKeyboardMouseEvents();
             _mockTimeProvider = new MockTimeProvider();
 
         }
 
-        private void TryDeleteDatabase() => new DirectoryFinder()
-                .Find(TestDatabaseLocation)
-                .GetFiles(TestDatabaseName).ToList()
-                .ForEach(file => file.Delete());
+        private static void UnlockDatabase()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
 
+        private void TryDeleteDatabase()
+        {
+            try{
+                File.Delete(
+                    Path.Combine(
+                        new DirectoryFinder().Find(TestDatabaseLocation).FullName,
+                        TestDatabaseName));
+            }catch(Exception e){}
+        }
 
         protected void StartCollecting()
         {
@@ -37,7 +52,10 @@ namespace MouseHeatmap.Collector.Tests
                  databaseLocation: TestDatabaseLocation,
                  databaseName: TestDatabaseName);
 
-             _collector = new MouseMovementsCollector(
+            _dbContextFactory.FindDatabase();
+            _dbContextFactory.Create().Database.Initialize(true);
+
+            _collector = new MouseMovementsCollector(
              _mockTimeProvider,
              new DataRecorder(_dbContextFactory),
              new MockKeyboardMouseEventsFactory(_mockEvents)
@@ -65,20 +83,12 @@ namespace MouseHeatmap.Collector.Tests
 
         protected List<ScreenUnit> GetScreenUnits()
         {
-           var dbContextFactory= new MouseHeatmapDbContextFactory(
-                 databaseLocation: TestDatabaseLocation,
-                 databaseName: TestDatabaseName);
-
-            dbContextFactory.FindDatabase();
-
-            using (var dbContext = dbContextFactory.Create())
+           using (var dbContext = _dbContextFactory.Create())
             {
                 return dbContext.ScreenUnits.ToList();
             }
 
 
         }
-
-
     }
 }

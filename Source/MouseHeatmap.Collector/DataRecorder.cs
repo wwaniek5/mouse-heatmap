@@ -22,6 +22,7 @@ namespace MouseHeatmap.Collector
 
             using (var dbContext = _dbContextFactory.Create())
             {
+                
                 foreach (var newScreenUnit in groupedScreenUnits)
                 {
                     var screenUnitInDatabase = GetScreenUnit(dbContext, new Point(newScreenUnit.X, newScreenUnit.Y));
