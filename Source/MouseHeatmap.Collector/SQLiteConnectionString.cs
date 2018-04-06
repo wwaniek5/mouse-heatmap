@@ -7,7 +7,6 @@ namespace MouseHeatmap.Collector
 
         public SQLiteConnectionString(string path)
         {
-            //todo validation
             connectionString = $@"Data Source={path};";
         }
 
