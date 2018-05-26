@@ -51,7 +51,7 @@ namespace MouseHeatmap.Collector
 
         private void OnMouseMoved(object sender,MouseEventArgs mouseEvent)
         {
-            if (CheckIfScreenSizeChanged())
+            if (ScreenSizeChanged())
             {
                 Log.Debug("Screen size is different than when the program started");
                 return;
@@ -70,7 +70,7 @@ namespace MouseHeatmap.Collector
             _lastEvent = mouseEvent;
         }
 
-        private bool CheckIfScreenSizeChanged()
+        private bool ScreenSizeChanged()
         {
             return _initialScreenBounds != Screen.PrimaryScreen.Bounds;
         }

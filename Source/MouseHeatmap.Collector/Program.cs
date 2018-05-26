@@ -31,8 +31,7 @@ namespace MouseHeatmap.Collector
                     new KeyboardMouseEventsFactory()                    
                     );
                 _collector.Start();
-
-
+                
                 Application.ApplicationExit += new EventHandler(OnExit);
                 Application.Run();
             }
@@ -57,7 +56,7 @@ namespace MouseHeatmap.Collector
 
         private static void OnExit(object sender, EventArgs e)
         {
-            
+            Log.CloseAndFlush();
         }
 
 

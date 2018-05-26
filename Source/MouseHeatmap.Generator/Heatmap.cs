@@ -45,7 +45,6 @@ namespace MouseHeatmap.Generator
                 255,
                 (int)(255 * (1 - relativeValue)),
                 (int)(255 * relativeValue));
-
         }   
     }
 }

@@ -23,17 +23,17 @@ namespace MouseHeatmap.Generator
                 heatmap
                     .Draw(MousePassedSelector)
                     .ScaleUp(2)
-                    .SaveToSubdirectory("results", "MousePassedHeatmap.bmp");
+                    .SaveToSubdirectory("results", "MousePassedHeatmap.jpg");
 
                 heatmap
                      .Draw(MouseFinishedSelector)
                      .ScaleUp(2)
-                     .SaveToSubdirectory("results", "MouseFinishedHeatmap.bmp");
+                     .SaveToSubdirectory("results", "MouseFinishedHeatmap.jpg");
 
                 heatmap
                      .Draw(SpeedSelector)
                      .ScaleUp(2)
-                     .SaveToSubdirectory("results", "SpeedHeatmap.bmp");
+                     .SaveToSubdirectory("results", "SpeedHeatmap.jpg");
             }
         }
 

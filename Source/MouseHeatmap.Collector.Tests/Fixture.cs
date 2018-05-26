@@ -43,7 +43,7 @@ namespace MouseHeatmap.Collector.Tests
                     Path.Combine(
                         new DirectoryFinder().Find(TestDatabaseLocation).FullName,
                         TestDatabaseName));
-            }catch(Exception e){}
+            }catch (Exception) { }
         }
 
         protected void StartCollecting()
